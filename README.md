@@ -1,5 +1,5 @@
 # Claude Forward Deployed Engineer Learning Path
-Jake Wood's notes.
+Jake Wood's notes. Let's build a durable mental model.
 
 ## AI Capabilities & Limitations
 
@@ -94,16 +94,16 @@ The lesson material is durable because these four properties remain stable even 
 ### Mapping
 4-6 tasks I've used AI for in the last 2 weeks
 1. Claude design for building custom slides based on specific content.
-[Yes first try]
+[Yes first try] [Steerability]
 
 2. Writing Swift code for an iOS application that runs Apple Foundation and Text Embedding models to answer questions using Retrieval Augmented Generation.
-[No, required reworking indexes and search types]
+[No, required reworking indexes and search types] [Next Token Prediction]
 
 3. Reviewing comments from engineering and helping me to update configuration recommendations.
-[No, changed the meaning and had to revert one suggestion and override]
+[No, changed the meaning and had to revert one suggestion and override] [Knowledge]
 
 4. Adapting an Agent using the GO ADK to run local models instead of the Gemini API I'm not paying for.
-[Yes, did this first time]
+[Yes, did this first time] [Steerability]
 
 ### Claude Analysis
 1. Claude Design slides
@@ -134,3 +134,50 @@ Designing slides and reviewing comments felt risky because they do not require a
 #### What's one AI behaviour you've noticed (good or bad) that you couldn't explain at the time?
 It's desire to please the user and general agreeableness can lead to inaccurate outcomes until a stern correction, at which point the model usually acknowledges the mistake, agrees and apologises.
 
+## What We Mean by AI
+Sort, rank, classify, predict. Are not generative.
+Systems that produce new content.
+
+Prediction system, strong and weak along predictable axis. 
+
+Because it is a prediction engine, generative AI writes compellingly (capability) but also hallucinates (limitation).
+
+Not distrust or fully delegate, calibrated trust. Each property is a continuum (capability - limitation). That means locating your task on the continuum.
+
+### 5 AI Powered Features You've Interacted With This Week?
+1. Gemini in Google Docs for reviewing comments. [Making edits to existing content]
+2. Claude desktop for Q&A. [generating answers]
+3. Claude Code for generating code for demos and POCs. [generating new code]
+4. Q&A RAG iOS testing with Apple Foundation model and embedding Gemma. [generating responses using retrieved chunks]
+5. Ollama local models for a simple agent that can tell the time given a location using the Go ADK. [calling a tool and generating a response]
+
+Claude:
+Four of the five are pure generation. Only #4 clearly has a ranking step, and #5 has a small classification step. Most real systems mix both, with ranking or classification first, then generation.
+
+Ranking and classifying is cheap, fast, and easy to test (you can check if it was right). Generating costs more per call and is harder to verify
+
+### Which of these five is most likely to have a failure mode this course will help me understand?
+
+#4, the RAG iOS app
+
+It has two stages: rank, then generate. An error in stage one flows into stage two.
+
+If retrieval pulls the wrong chunks, the model still writes a fluent, confident answer from bad context. Nothing signals the failure.
+
+Small on-device models make this worse. They follow context less well and may fill gaps from their own guesses.
+
+Failure modes to watch:
+- Retrieval miss: the right chunk exists but ranks too low.
+- Bad chunking: the answer is split across chunks.
+- Embedding mismatch: a small model like Gemma may miss domain terms.
+- Ungrounded answer: the model ignores the chunks and makes things up.
+
+RAG failures are silent, so customers lose trust before they notice. The fix is to measure retrieval on its own (did the right chunk land in the top 5?) before you judge the answer
+
+### Did the generative/classification distinction with AI change how you think about any tool you use?
+Yes, the RAG app because the chunks that are retrieved play an important role in determining the model's retrieved knowledge.
+
+### Look at how you tagged your task list. Did any task feel like it could belong under more than one property?
+The RAG app is knowledge and next token prediction, if the chunks are inaccurate the prediction will still be completed but may be completely wrong and hard to spot. The chunks it retrieved are therefore critical to review instead of focusing entirely on the generated response.
+
+### How AI Gets Its Character
