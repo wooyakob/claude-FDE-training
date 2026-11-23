@@ -94,16 +94,16 @@ The lesson material is durable because these four properties remain stable even 
 ### Mapping
 4-6 tasks I've used AI for in the last 2 weeks
 1. Claude design for building custom slides based on specific content.
-[Yes first try] [Steerability]
+[Yes first try] [Steerability] [bring design context]
 
 2. Writing Swift code for an iOS application that runs Apple Foundation and Text Embedding models to answer questions using Retrieval Augmented Generation.
-[No, required reworking indexes and search types] [Next Token Prediction]
+[No, required reworking indexes and search types] [Next Token Prediction] [supply latest docs/context if not public]
 
 3. Reviewing comments from engineering and helping me to update configuration recommendations.
-[No, changed the meaning and had to revert one suggestion and override] [Knowledge]
+[No, changed the meaning and had to revert one suggestion and override] [Knowledge] [supply comments as context]
 
 4. Adapting an Agent using the GO ADK to run local models instead of the Gemini API I'm not paying for.
-[Yes, did this first time] [Steerability]
+[Yes, did this first time] [Steerability] 
 
 ### Claude Analysis
 1. Claude Design slides
@@ -180,7 +180,7 @@ Yes, the RAG app because the chunks that are retrieved play an important role in
 ### Look at how you tagged your task list. Did any task feel like it could belong under more than one property?
 The RAG app is knowledge and next token prediction, if the chunks are inaccurate the prediction will still be completed but may be completely wrong and hard to spot. The chunks it retrieved are therefore critical to review instead of focusing entirely on the generated response.
 
-### How AI Gets Its Character
+## How AI Gets Its Character
 Pretraining 
 Document completer.
 
@@ -305,4 +305,132 @@ General understanding of an area I don't know well, probably not.
 #### Look at your task list: which tasks sit mostly in the capability zone, and which push into specificity that needs verification?
 
 The task I used sits in my capability zone but still required verification because it required real specificity.
+
+### Markov
+Send text to a friend using only the recommended next words.
+
+Train on a handful of messages. Tally connections between words -> transition matrix.
+"i think we should probably ship it"
+"i think that sounds good"
+Finished map of connections between words --> frequency table.
+Normalize each row and get a probability distribution of what comes next.
+
+The act of picking a next word based on what you have so far is sampling.
+
+i think
+we is at 67%
+that is at 33%
+
+picking words based on what feels right.
+but writing code to make these choices, what encoded rule?
+
+Pick according to probabilities and boost most likely choices.
+
+I think (we = 100%) with 0.1 temp, focused
+
+Markov - last word, LLM - entire conversation so far.
+
+Compute - Markov, look up one row in a table.
+LLM - pass through billions of params.
+Output is the same: a probability distribution of likely next words or tokens but LLM is through a neural network and more complex.
+
+Sampling is the same but training is radically different.
+
+Markov published this idea in 1906. In 2010, n-gram models like this were powering next-word prediction on your phone (SwiftKey, then Apple's QuickType). Around 2015, neural networks, first RNNs, then transformers in 2017, began to replace the table lookup approach with a learned function.
+
+## Knowledge
+Knowledge cutoff in training.
+Web search, RAG and tool use as features to try and address this limitation.
+
+Models are exposed to more data than any human in their lifetime.
+
+Model does not have experiences, browse web in real time (without specific tools).
+
+Rare topics, post cutoff events, niche domains, local knowledge: limitations.
+
+Staleness, true at the time of training but false after.
+
+Events post training data.
+
+Source amnesia, where a piece of knowledge came from.
+
+Inherited biases.
+
+MCPs - connect to docs it never trained on.
+
+Extending model's knowledge at runtime.
+
+Knowledge is core to delegation, may need to supply context to overcome known limitations.
+
+### Outsider Test
+Writing Swift code for an iOS application that runs Apple Foundation and Text Embedding models to answer questions using Retrieval Augmented Generation.
+
+Mainstream:
+1. Swift is used for iOS development.
+2. There are 8 bits in a byte.
+
+Niche:
+1. You can use SQ8 versus float32. At 768 dims, 1 byte/8 bits versus 4 bytes/32 bits. At 1m vectors, 0.77GB v. 3GB.
+2. Vector indexes can be built on device in a local database: Couchbase Lite.
+
+Default assumption that outsiders get wrong:
+1. Vector indexes are only created in the cloud database.
+
+Probes:
+1. Coverage.
+- How many bits are there in a byte?
+- At 768 dims, SQ8, at 1m vectors how large is the data?
+
+Both answered with a confident tone. Far greater depth for the niche topic.
+
+2. Staleness. Something that changed recently. 
+
+- Who is the CEO of couchbase. With web search disabled, Matt Cain. With it enabled, it confirms correctly that BJ Schaknowski is in charge. Claude even recommends turning on web search after delivering the dated and incorrect answer of Matt Cain.
+
+3. Default assumptions. 
+Where are vector indexes created when performing RAG on Couchbase Mobile?
+
+Answers correctly: on the device, with a good explanation.
+
+#### What's one area of your work where you now realize you need to supply context rather than assume the model has it?
+Current events e.g. a change of CEO.
+Incorrect without web search enabled.
+
+#### Did the default-assumption probe surface anything that surprised you?
+I was surprised that adding the world mobile to couchbase gave an accurate response. This one word changed the answer entirely. Good prompting is important.
+
+## Visualizing 1024D Space
+For decades, Search returned results only based on string similarity. "Car" --> "Car" "car". Not "vehicle" "automobile".
+
+Google made incremental improvements: synonym dictionary, car mapped to automobile. Stemming rules, connecting running to run. Click pattern mining, NYC apartments --> Searchers want the same results as Manhattan rentals.
+
+Embeddings changed all of this with the idea that meaning could be a place.
+
+Encoding: score every doc in a corpus of knowledge on 2 dimensions: how much it relates to Dinosaurs, and Rollercoasters.
+
+Docs about similar topics end up near each other.
+
+Retrieval is searching this space.
+
+What's the best dinosaur-themed roller coaster?
+
+Plot the Q and find the nearest K items using multi dimensional proximity.
+
+2D can only capture 2 topics, the real world has way more.
+
+Each new dimension adds another coordinate to each point and another squared term to the distance formula.
+
+Noone decides the meaning of each axis in a real embedding model, the meaning is emergent (shows up in training).
+
+Embedding models assign the coordinates.
+
+One chunk of text corresponds to one point in space (true if one chunk is three words or three paragraphs).
+
+Cosine similarity measures how similar two pieces of text are, based on the direction their vectors point.
+
+## Working Memory
+
+
+
+
 
