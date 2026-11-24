@@ -519,7 +519,7 @@ Claude:
 Build steps (5)
 
 1. Install Ollama and a model
-# install from https://ollama.com, then:
+install from https://ollama.com, then:
 ollama pull qwen2.5:7b
 
 2. Install the one dependency
