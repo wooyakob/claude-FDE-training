@@ -429,8 +429,161 @@ One chunk of text corresponds to one point in space (true if one chunk is three 
 Cosine similarity measures how similar two pieces of text are, based on the direction their vectors point.
 
 ## Working Memory
+Context window as a fixed size container.
+Hard size limit, conversation, docs, exceed --> oldest material purged usually silently.
 
+Default, window empties between sessions.
+Unless product features: memory, claude.md.
 
+Limitation: docs get longer, convo runs on, relying on past conversations.
 
+Works up until it does not, then there's a cliff. The other properties degrade gradually.
 
+Why is the window fixed?
+The model processes entire context as a single block every time it generates a response. Ceiling on how much it can hold and still product a coherent reply.
+
+Attention is not perfectly uniform.
+Lost in the middle - material buried deep in a long input, less weight than material at the start and end.
+
+Product features to deal with limitations:
+- Memory, save selected facts across sessions.
+- Summarization, condense convo history to free up room.
+- Projects, workspaces, keep docs reliably in context without re-uploading.
+- Skills, minimal until specific tasks need them.
+- Multi agent - specialized agents each have their own windows.
+- Long context windows.
+
+### Context Degradation
+When more context makes things worse...
+Natural instinct is to give it everything.
+
+Items at the start benefit from primacy. Items at the end from recency.
+Middle gets neither advantage.
+
+LLMs exhibit the same pattern.
+Accuracy dropped more than 30% putting a key fact in the middle.
+
+Put the most important instructions at the start and end of the context.
+
+The core tension of context engineering is what to include, where to put it and what to leave out.
+
+## Steerability
+Model's ability to follow directions.
+Role, tone, format, word limit, rules.
+Not understanding, model follows instructions using same pattern matching approach.
+
+Limitation of steerability, instructions as an attack surface: promp injection.
+
+Product features that help:
+- System prompts and custom instructions
+- Visible reasoning
+- Structured output modes, JSON, function calling
+
+Ask for an intermediate result before continuing.
+
+### Goal Rewrite
+Gap between what you say and what you mean.
+
+Adapting an Agent using the GO ADK to run local models instead of the Gemini API I'm not paying for.
+
+Goal in one sentence: Build an Agent that runs locally.
+
+- List 5 local models to use for this.
+
+Claude: pick by your GPU memory.
+1. Qwen 3.6 27B first. It also suits structured output and tool calling, and fits in 24 GB VRAM at Q4. Start here. 
+
+2. GLM 5.1 Air 27B. Called the best pick for long-horizon coding agents in one 2026 roundup. GLM 5.1 is also noted for JSON workflows and extraction. 
+
+3. DeepSeek V4 Flash. A general agent, coding, and RAG model that runs on 24 GB VRAM at Q4. The bigger V4 Pro needs far more memory. 
+
+4. Qwen3.5 4B (or Nemotron Nano 4B). In one March 2026 test of 13 local models, Qwen3.5 4B led tool calling at 97.5%, with Nemotron Nano 4B close behind. Good for laptops and edge devices. 
+
+5. Llama 5.1 8B. Fits 8 GB-class hardware. Qwen and GLM have passed Llama on agent benchmarks, though. Treat it as the low-memory fallback. 
+
+- Set this up and share results from each step before continuing with the next step.
+
+Claude: ran through all and shared:
+
+Step 5 result:
+With no model server running, the agent fails with a clear connection error to localhost:11434. That's expected here.
+The package is local-agent.tar.gz. It holds agent.py and run.sh.
+
+- Make it simpler.
+
+Claude: Here's a shorter version. It has two tools and one loop, with no sandbox folder and no extra files.
+
+v. Shorten the build steps to make it easier to follow but maintain a complete instruction set.
+
+Claude:
+Build steps (5)
+
+1. Install Ollama and a model
+# install from https://ollama.com, then:
+ollama pull qwen2.5:7b
+
+2. Install the one dependency
+pip install requests
+
+3. Save this as simple_agent.py (or use the file I gave you)
+
+4. Run it
+python simple_agent.py "What is 15% of 1200 plus 40?"
+
+You should see a calc(...) -> 220.0 line, then the final answer.
+
+5. Test the file tool
+echo "rent 1500, food 400, gas 120" > notes.txt
+python simple_agent.py "Read notes.txt and total the numbers"
+
+Expected: read_file(...), then calc(...) -> 2020, then the answer.
+
+#### How often have you been stating format but not goal? What changes when you include both?
+
+Most of the time. Adding a high level goal is useful to experiment with the different approaches to achieving it. It can give the model more flexibility at the start when things are more ambiguous with greater steerability as the outcome and how you want to get there becomes more defined.
+
+#### What's one recurring task where you'll add a mid-process checkpoint starting this week?
+When asking technical questions, I want to see the documentation it is using as it can be outdated and we have information and knowledge that is more accurate than our public facing documentation.
+
+## When Properties Collide
+Shape how AI systems behave. Most real world AI surprises are two properties meeting at the same time.
+When you can name both, the fix becomes obvious.
+e.g. List three research papers by Jack Clark in AI Policy with Publication years (niche topic)
+Go to look it up and it does not exist.
+Next token prediction -> meeting Knowledge
+
+FIX:
+- Verify specifics independently
+- Use a tool with source grounding
+
+Careful constraints long convo. 20 messages later, model is ignoring half of them.
+Working memory -> meeting steerability.
+
+FIX
+- Resupply critical context
+- Start fresh conversation and put essentials upfront
+
+Model Interactions, ASK: Which properties am I looking at with the task I am trying to accomplish?
+
+Discernment = naming the property and implementing fixes
+
+### Which property pairing do you think you'll encounter most often in your day-to-day work?
+Knowledge & Next token prediction.
+
+Delegation, Description, Discernment, Diligence are what you do.
+Steerability, Working memory, Next token prediction, Knowledge are what you are responding to.
+
+Machine layer sharpens the human layer.
+
+Calibrated trust! Is this well worn territory, is this topic recent, is my context concrete, does it fit in the window.
+Adjustments, verification, context, more checkpoints. 
+You are in control.
+
+That is the true essence of AI Fluency.
+
+### What's the single biggest shift in how you think about AI behavior from Lesson 1 to now?
+Failure modes are a combination of two properties. You are firmly in control in engineering high quality outcomes and implementing fixes.
+
+### Which of the 4Ds feels most immediately sharpened by what you've learned here?
+Working in the database world, Knowledge and Memory when viewed from the perspective of overcoming model limitations with Product features e.g. Memory, RAG. 
 
