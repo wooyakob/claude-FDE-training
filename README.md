@@ -587,3 +587,166 @@ Failure modes are a combination of two properties. You are firmly in control in 
 ### Which of the 4Ds feels most immediately sharpened by what you've learned here?
 Working in the database world, Knowledge and Memory when viewed from the perspective of overcoming model limitations with Product features e.g. Memory, RAG. 
 
+## AI Fluency for Builders
+Shipping software:
+Writing code is one part of the job.
+What problems are worth solving.
+Make decisions about how it should work.
+Ship it, learn from feedback and iterate.
+
+What does it mean to be a Builder?
+Understanding customer problem --> Shipping a solution.
+
+Delegating **implementation** to AI is usually fine.
+
+Delegating **judgment** to AI is not.
+
+### Builder Brief
+Reusable context doc to give AI at the start of any project. Onboarding AI collaborator.
+
+#### Self Reflection
+What are you building right now, or planning to build? Name the product, the users, and the problem it solves.
+
+I am planning to build a mobile application for car mechanics to scan and order parts.
+
+What’s your role — and what are you personally responsible for shipping?
+
+My role is to build the iOS application and I'm responsible for shipping the scanning and ordering mechanism on the frontend.
+
+Where do you already use AI? Where have you avoided it, and why?
+
+I use Claude Code to help with writing, improving and testing code. It has been avoided for initial ideation and judgment on architecture and features as these are my choices that'll shape what I work on and my domain understanding in these areas.
+
+Complete this sentence: “If AI could handle _______, I could spend more time on _______, which is where the most important decisions get made.”
+
+If AI could handle code generation, I could spend more time on design and planning new iterations based on a customer's product feedback, which is where most important decisions get made.
+
+#### Brief
+I am a builder. I want to create a reusable context document for future AI collaboration.
+
+I am planning to build a mobile application for car mechanics to scan and order parts.
+
+My role is to build the iOS application and I'm responsible for shipping the scanning and ordering mechanism on the frontend.
+
+I use Claude Code to help with writing, improving and testing code. It has been avoided for initial ideation and judgment on architecture and features as these are my choices that'll shape what I work on and my domain understanding in these areas.
+
+If AI could handle code generation, I could spend more time on design and planning new iterations based on a customer's product feedback, which is where most important decisions get made.
+
+Please draft a brief that I can use in future sessions
+
+Claude:
+
+## Project Brief: Mechanic Parts Scan & Order App
+
+### What we're building [Description]
+An iOS app for car mechanics to scan a part (barcode, VIN, or part label) and order it fast. Business goal: cut the time a mechanic spends finding and ordering parts, so they spend more time on repairs.
+
+### My role [Delegation]
+I own the iOS frontend: the scan flow and the order flow. I ship it.
+
+### Stack and constraints [Discernment]
+- Swift / SwiftUI
+- Scanning: AVFoundation
+- Backend/API: Backend Team (Python/FastAPI)
+- Target devices / iOS version: iPhones. iPhone 15+
+- Mechanics work in garages: gloves, bad light, spotty wifi. Design for that.
+
+### How I use AI [Delegation]
+**AI does:** write, refactor, review, and test code. Explain tradeoffs. Debug.
+**I do:** ideation, architecture, feature choices, and product judgment. These shape what I build and how well I know the domain, so I keep them.
+
+### Rules for AI [Discernment]
+1. Don't pick architecture or features for me. When a choice matters, give 2-3 options with tradeoffs and let me choose.
+2. Once I decide, build to my decision. Flag risks once, briefly, then proceed.
+3. Match my existing code style and patterns. Ask before adding dependencies.
+4. Write tests with the code. Say what you tested and what you didn't.
+5. Keep answers short. Code first, then notes.
+
+### What I want more time for [Delegation]
+Design, and planning the next version from customer feedback. That's where the key decisions happen. Code generation should free that time, not replace it.
+
+### Current state [Diligence]
+- Done: [ ]
+- In progress: [ ]
+- Next: [ ]
+- Open questions / blockers: [ ]
+
+### Customer feedback log [Diligence]
+[Date: what mechanics said → what I decided]
+
+## 4D for AI Fluency: Human Competencies
+Delegation, Description, Discernment, Diligence.
+
+2 modes of interaction.
+1. How to engage with AI effectively on a day to day basis: inner loop, describe and discern. Not sufficient on its own.
+2. Outer loop: delegation and diligence. Ethical responsibilities.
+
+1.
+Description - effective comms with AI system. 
+
+No "Summarize this report"
+
+Yes "Summarize report for non tech audience, focusing on non tech findings, in under 300 words."
+
+Discernment, outputs: are stats accurate, does audience actually talk about the topics this way. This rarer, questioning AI's reasoning: the least common Behaviour observed... wow.
+
+2.
+Delegation, deciding what work should be done by humans, AI, distributing tasks between them.
+Email - is this a routine task or a nuanced communication.
+
+Diligence, taking responsibility for how you use AI.
+Which systems, how you interact with them.
+Colleagues and stakeholders deserve to understand when/how AI has been involved.
+Always accountable for the final result.
+
+## Gen AI
+AI that can create new content.
+Language Model - trained to predict and generate human language.
+Algo breakthroughs: NN, transformer (2017), processing sequences of text whilst maintaining relationships across passages.
+Data explosion -> training data, broad and nuanced understanding of language and cocnepts.
+Compute - GPUs, TPUs, specialized hardware and clusters (distributed compute)
+
+Scaling Laws - grow larger, more training data, improved in predictable ways. New capabilities (reasoning through problems step by step, adapting to new tasks with minimal instruction: no-one expected this).
+
+### What ethical considerations come to mind given how generative AI works and where it falls short?
+Asking health questions, it will pattern match versus express real judgment required to provide personalized patient care. Ethically this means not relying on it for healthcare advice. There is no replacement for the judgment of a trained doctor.
+
+## Delegation
+Before writing a single line of code.
+A dozen decisions that shapes whether what you build will matter.
+
+I have a customer problem. 
+How do I break it down.
+What role does AI play.
+
+- Frame the problem
+- Set goals
+- Decide what to tackle first
+- Which decisions to make themselves, hand off
+
+### Builder's Toolkit
+- Empathy, what does person we're building for actually need (what they say they want)
+- Design, what should we build and why (weigh tradeoffs and make bets)
+- Architecture, how should it be structured (pieces and how should they fit together)
+- Implementation, AI strongest here, delegate most aggressively
+- Judgment, does it actually work, is it good, would you put your name on it
+- Shipping, real users, learning
+
+AI strongest in the middle of the toolkit and weakest at the edges. The edges are where the value is.
+
+Next era of great builders - code that runs (no), code that matters (yes)!
+
+### Scenario
+A community health clinic needs a way for patients to check wait times before coming in.
+
+#### Deliverable 1: Problem Brief
+
+
+#### Deliverable 2: Delegation Plan
+
+
+#### Deliverable 3: Acceptance Tests
+
+
+
+
