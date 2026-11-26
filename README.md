@@ -741,12 +741,180 @@ A community health clinic needs a way for patients to check wait times before co
 
 #### Deliverable 1: Problem Brief
 
+##### Who are the users? Be specific. Patients, yes — but which patients? What about staff? Who else touches this?
+Community health clinics: 
+No insurance, sliding fee. Discounted based on household income and family size. Insurance, accept Medicaid, Medicare, many private insurance plans. 
+
+Patients are likely proximate to their community health clinic. As no insurance is accepted and there are discounts based on household income and family size, they are likely to be in lower income brackets and have larger families.
+
+As all patients are accepted, there are likely to be longer wait times and therefore patients with greater options are going to check this and evaluate whether it's worth the wait, or perhaps paying more to go elsewhere.
+
+Receptionists will want to know wait times to help them with triaging and prioritizing patients e.g. in the ER where the most serious conditions and symptoms are moved up the queue. 
+
+Managers of these clinics will want to know in case there are ways to speed up processes.
+
+##### What do they actually need? Not “a wait time checker.” What outcome are they hoping for?
+What they need is certainty that all patients will be seen and receive adequate time to help resolve their issue. 
+
+They need to ensure doctors are not burnt out and are able to operate effectively throughout the course of a day, not overdoing it with volume of patient appointments.
+
+Outcome: great patient care, happy doctors/staff.
+
+##### What does a great solution feel like to use? Describe the experience, not the features.
+Patients:
+- Book an available slot with a preferred doctor.
+- Share symptoms, have a prepared doctor show up to an appointment on time and ready to take action.
+- Plenty of avaialbility, even at short notice.
+- Doing all of this without too much effort, a small number of clicks, help with explaining the situation.
+
+Doctors:
+- Clear understanding of the day ahead, who's coming in and what their problems and medical histories are.
+- Time to do all of the work in between appointments, not too stacked.
+- Time off, not always available at a moment's notice.
+
+Receptionists: 
+- Confidence talking to patients and certainty on scheduling.
+- Simple and reliable system to use.
+
+##### What are the real constraints? Think budget, technical skill at the clinic, patient access to devices, privacy requirements.
+- Time (x number of Doctors)
+- Older patients (technical skills)
+- Budget for doctors
 
 #### Deliverable 2: Delegation Plan
 
+Toolkit Capability:
+1. Empathy (Augmentation: you and AI work together)
+2. Design (Agency: AI operates with latitude inside boundaries you set)
+3. Architecture (Augmentation: you and AI work together)
+4. Implementation (Automation: AI does it, you check)
+5. Judgment (Augmentation: you and AI work together)
+6. Shipping (Augmentation: you and AI work together)
 
 #### Deliverable 3: Acceptance Tests
+5-7 statements that define done.
+Concrete enough that a stranger could say if the product passes or not.
 
+1. A patient with a smartphone (iPhone and Android: 15+) and a free account can view the clinic's wait times in real time.
+2. A patient can view these times with SSO (Google, Apple) in less than five clicks in total.
+3. A patient can find their community health clinic easily based on proximity.
+4. A patient can share their symptoms and purpose for their visit easily and a doctor is prepared/has this information to hand when they are called to be seen.
+5. A patient can share their status (household income, family size, medicaid, medicare, private insurance) ahead of time to avoid delays/insurance questions at reception and have a clear understanding of cost and coverage upfront.
 
+### Where did you spend most of your time across the six capabilities on a past project? Where should you have spent more?
+Too much time on implementation. More time on empathy, design and judgment.
 
+### If implementation became effectively free tomorrow, where would your value as a builder come from?
+Determining what to build, why it matters and selling that belief to users.
+
+### Describing what users need
+Better prompts are necessary but not sufficient for building great products.
+
+Messy human need --> Precise instruction AI can act on.
+
+Good description:
+- user voice (real person actually says: I want to see wait times before I go to the clinic)
+- product requirement (scope it into something measurable) mobile web page, updated every 5 minutes.
+- tech spec, web app pulls clinical data over an API.
+- AI instruction, specific things it can verify
+
+Did the test pass & is the user satisfied.
+Code that works but the product does not is a description failure.
+
+#### Product Requirement
+Mobile application that works on any iPhone and Android version 15+. Patient can SSO with Google and Apple. Patient can find the community health clinic closest to their location. Patient can see wait times in real time, updated by the clinic's reception every 30 minutes. Patients can sign in and see wait times, identify clinic and see wait times in under 5 clicks.
+
+#### Technical Spec
+Keep this short and a prototype can be built in 30 days.
+
+Claude:
+
+###### Stack:
+Mobile: Flutter (one codebase, iOS + Android)
+Auth: Firebase Auth (Google + Apple SSO)
+Data: Firestore (live listeners, offline cache)
+Nearby search: Geohash on clinic coordinates
+Staff input: Simple web page (PWA), one big "update wait time" button
+Reminders: Cloud Function pings staff every 30 min
+
+###### Flow
+Patient signs in, grants location, sees the nearest clinic and its wait time on the home screen. That's 3 taps for new users, 0 for returning users.
+
+###### Data
+clinics: name, address, lat/lng, geohash
+waitTimes: clinicId, minutes, updatedAt
+staff: uid, clinicId
+
+###### Security rule: 
+Only staff can write their own clinic's wait time. Patients read only.
+
+###### 30-Day Plan
+Week	Deliver
+1	Auth, clinic seed data (5–10 clinics), nearest-clinic list
+2	Live wait times, staff web page
+3	Reminders, "updated X min ago" and stale flag (>45 min)
+4	Test on real devices, fix bugs, demo with 1–2 clinics
+Cut for the prototype
+
+Maps, accounts beyond SSO, analytics, multi-language, check-in or booking.
+
+Fix in the spec
+Staff tool is missing. Add it, or wait times have no source.
+"Android 15+" is very new. Many patients use older phones. Confirm, or lower to Android 10+.
+Location denied: Fall back to ZIP search.
+
+###### Success Metric
+Patient sees a wait time in under 5 taps, and staff update on time at least 80% of the time.
+
+#### Tighten Acceptance Tests
+1. A patient with a smartphone (iPhone and Android: 10+) and a free account can view the clinic's wait times as they are updated.
+2. A patient can view these times with SSO (Google, Apple) in less than five clicks in total.
+3. A patient can find their community health clinic easily based on proximity.
+4. A patient can share their symptoms and purpose for their visit easily and a doctor is prepared/has this information to hand when they are called to be seen.
+5. A patient can share their status (household income, family size, medicaid, medicare, private insurance) ahead of time to avoid delays/insurance questions at reception and have a clear understanding of cost and coverage upfront.
+6. A clinic's receptionist can login with SSO (Google, Apple) and update wait time. They get an email alert every 30 minutes to sign in and update. 
+
+Edge Cases
+7. Older devices.
+8. Location sharing denied.
+9. Clinic's receptionist does not login and update.
+10. Poor internet connectivity in the clinic's reception.
+
+#### Build
+Build a protoype for a patient who wants to see wait times before visiting a community health clinic. 
+
+Here is the Product Requirement:
+Mobile application that works on any iPhone and Android version 15+. Patient can SSO with Google and Apple. Patient can find the community health clinic closest to their location. Patient can see wait times in real time, updated by the clinic's reception every 30 minutes. Patients can sign in and see wait times, identify clinic and see wait times in under 5 clicks.
+
+Here is the Technical Spec:
+
+Stack:
+Mobile: Flutter (one codebase, iOS + Android)
+Auth: Firebase Auth (Google + Apple SSO)
+Data: Firestore (live listeners, offline cache)
+Nearby search: Geohash on clinic coordinates
+Staff input: Simple web page (PWA), one big "update wait time" button
+Reminders: Cloud Function pings staff every 30 min
+
+Flow:
+Patient signs in, grants location, sees the nearest clinic and its wait time on the home screen. That's 3 taps for new users, 0 for returning users.
+
+Data:
+clinics: name, address, lat/lng, geohash
+waitTimes: clinicId, minutes, updatedAt
+staff: uid, clinicId
+
+Security rule: 
+Only staff can write their own clinic's wait time. Patients read only.
+
+Here are the Acceptance Tests:
+1. A patient with a smartphone (iPhone and Android: 10+) and a free account can view the clinic's wait times as they are updated.
+2. A patient can view these times with SSO (Google, Apple) in less than five clicks in total.
+3. A patient can find their community health clinic easily based on proximity.
+4. A patient can share their symptoms and purpose for their visit easily and a doctor is prepared/has this information to hand when they are called to be seen.
+5. A patient can share their status (household income, family size, medicaid, medicare, private insurance) ahead of time to avoid delays/insurance questions at reception and have a clear understanding of cost and coverage upfront.
+6. A clinic's receptionist can login with SSO (Google, Apple) and update wait time. They get an email alert every 30 minutes to sign in and update. 
+
+#### Example Output
+![ClinicWait prototype](clinicwait_prototype.png)
 
