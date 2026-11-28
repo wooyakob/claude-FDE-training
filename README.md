@@ -918,3 +918,76 @@ Here are the Acceptance Tests:
 #### Example Output
 ![ClinicWait prototype](clinicwait_prototype.png)
 
+## Discernment for User Experience
+Design and user experience becomes the differentiator.
+Users arrive with expectations - has to be clear and not overwhelming.
+
+Find info a user needs, as they need it.
+
+User does something, interface acknowledges it.
+
+Clear explanation of an error message, what to do next.
+
+Design literacy is translating your own taste into something that is executable.
+
+### UX Lab
+- Clarity "Submit" (submit what, for how much) -> "Place Order - $16.50"
+- Hierarchy - visual weight should match info priority. The most important thing should look the most important. Food order: (Price: top, arrival time, order number)
+- Accessibility - 1/5 people have a disability. Small text, color-only signals, complex jargon -> Exclusionary. Color on order confirmation v. Color and a tick.
+- Feedback - breaks, users need to know what happened, what to do next, how to get help. Raw error code is unhelpful. "We couldn't place your order. Your cart is saved - please try again in a moment."
+
+"Make it look good" is a wish, not a technical spec. Design literacy is a core builder skill.
+
+#### ClinicWait
+User flow
+Info hierarchy
+Interaction patterns
+
+#### Design Spec
+
+##### User Flows
+Patient creates an account or logs in with SSO -> Enable Location to see nearest Community Health Clinic -> Most proximate clinic served to user -> User can click on the clinic and see current wait times clearly explained: 25-35 minutes, current time 10:45am. Last updated at 10:25am Nov 27. 
+
+Clinic receptionist creates an account or logs in with SSO -> Can see their Clinic page --> Can update time and the last updated timestamp is recorded and populated automatically.
+
+##### Info hierarchy
+In order of importance:
+1. Clinic Name
+2. Current Wait Time
+3. Last Updated
+4. Current Time
+
+##### Info Patterns
+Wait Time 0-30 minutes: Green Color: Text: Short Wait
+
+Wait Time 30-60 minutes: Orange Color: Text: Medium Wait
+
+Wait Time 60 minutes +: Red Color: Text: Long Wait
+
+Error: 
+Wait time not updated in the last 60 minutes.
+
+"This information has not been updated in the last 60 minutes and therefore may be inaccurate. Please call the Clinic's reception at: X number to confirm ahead of visiting."
+
+##### How much of your design spec describes what the interface does versus how it should feel to use?
+Primarily what the interface does versus how it should feel to use.
+As a patient. As a receptionist.
+
+##### After running the accessibility check, did you build with accessibility in mind from the start, or add it at the end?
+Added at the end and not front of mind in the original building process.
+
+## Stand behind what you build
+Diligence in the builder model is full ownership.
+
+You are resonsible for the product, from whether it should exist, to whether it's serving users post launch.
+
+AI use is transparent, ethical and accountable.
+
+- verification, seek edge cases and assumptions (Q: Claude, what assumptions and trade offs did you make, what security considerations have you considered)
+- transparency, honest about when AI was used.
+- understanding, separate step, asking Qs.
+
+Engineering best practices have never been more important: tests, observability, feature flags.
+
+
+
